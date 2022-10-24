@@ -36,12 +36,16 @@ export class TodoService {
     });
   }
 
+  findAll() {
+    return `This action returns all`;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} todo`;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  update(todoId: number) {
+    return this.todoRepository.update(todoId, { completed: true });
   }
 
   remove(id: number) {

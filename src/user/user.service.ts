@@ -18,7 +18,7 @@ export class UserService {
     user.firstName = createUserDto.firstName;
     user.lastName = createUserDto.lastName;
     user.password = createUserDto.password;
-    user.role = Constants.ROLES.NORMAL_ROLE;
+    user.role = Constants.ROLES.ADMIN_ROLE;
     return this.userRepository.save(user);
   }
 
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   findUserByEmail(email: string) {
-    return this.userRepository.findOneOrFail({ where: { email: email } });
+    return this.userRepository.findOne({ where: { email: email } });
   }
 
   findOne(id: number) {
