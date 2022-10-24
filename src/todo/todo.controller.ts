@@ -6,37 +6,60 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipeBuilder,
 } from '@nestjs/common';
+import { Express } from 'express';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
+import { ApiConsumes, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { QueryParamDto } from './dto/query-todo-param.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('todo')
+@ApiTags('Todo')
+@ApiSecurity('JWT-auth')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  // @ApiConsumes('multipart/form-data')
+  uploadFile(
+    @UploadedFile()
+    file: Express.Multer.File,
+  ) {
+    return this.todoService.uploadFile(file);
   }
 
-  @Get()
-  findAll() {
-    return this.todoService.findAll();
+  @Post('/add/:userId')
+  create(
+    @Body() createTodoDto: CreateTodoDto,
+    @Param('userId') userId: number,
+  ) {
+    return this.todoService.create(createTodoDto, userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoService.findOne(+id);
+  @Get('/findAllNotCompleted/:userId')
+  findAllTodoByUserNotCompleted(
+    @Param('userId') userId: number,
+    @Query() queryParamDto: QueryParamDto,
+  ) {
+    return this.todoService.findAllTodoByUserNotCompleted(
+      Number(userId),
+      queryParamDto,
+    );
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todoService.update(+id, updateTodoDto);
+  @Get('/findAllCompleted/:userId')
+  findAllTodoByUserCompleted(@Param('userId') userId: number) {
+    return this.todoService.findAllTodoByUserCompleted(Number(userId));
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+  @Delete('/delete/:todoId')
+  removeTodo(@Param('todoId') todoId: number) {
+    return this.todoService.remove(todoId);
   }
 }
