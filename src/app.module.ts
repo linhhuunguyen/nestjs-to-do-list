@@ -3,13 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
-import { TodoModule } from './todo/todo.module';
-import { TodoController } from './todo/todo.controller';
-import { UserController } from './user/user.controller';
-import { TodoService } from './todo/todo.service';
-import { UserService } from './user/user.service';
-import { AuthModule } from './auth/auth.module';
+import { UserModule } from './api/user/user.module';
+import { TodoModule } from './api/todo/todo.module';
+import { AuthModule } from './api/auth/auth.module';
+
 
 @Module({
   imports: [
