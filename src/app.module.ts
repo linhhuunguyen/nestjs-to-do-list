@@ -6,7 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './api/user/user.module';
 import { TodoModule } from './api/todo/todo.module';
 import { AuthModule } from './api/auth/auth.module';
-
+import { ProductImageModule } from './api/product-image/product-image.module';
+import { ProductsModule } from './api/products/products.module';
+import { CategoryModule } from './api/category/category.module';
 
 @Module({
   imports: [
@@ -29,6 +31,9 @@ import { AuthModule } from './api/auth/auth.module';
     UserModule,
     TodoModule,
     AuthModule,
+    ProductImageModule,
+    ProductsModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
